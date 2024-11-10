@@ -8,9 +8,19 @@ export default {
   ],
   theme: {
     extend: {
+      animation:{
+        "loop-scroll-left":"loop-scroll-left 45s infinite linear",
+      },
+      keyframes:{
+        "loop-scroll-left": {
+          from:{transform:"translateX(0)"},
+          to:{transform:"translateX(-100%)"}
+        },
+      },
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        "c-white-100": "#fafafa",
+        "c-white-500": "#ecebea",
+        "c-gray-100": "#242424",
       },
     },
   },
