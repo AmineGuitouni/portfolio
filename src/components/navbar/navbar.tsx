@@ -16,10 +16,11 @@ export default function Navbar() {
                     <CopyMailBtn className="sm:hidden">
                         Email
                     </CopyMailBtn>
-
-                    <Button className="w-[75px]">
-                        CV
-                    </Button>
+                    <a target="_blank" href="https://drive.google.com/file/d/1scW8rRjqzqqn3mJQkziJzWeoMuZaxzXJ/view?usp=sharing">
+                        <Button className="w-[75px]">
+                            CV
+                        </Button>
+                    </a>
                 </div>
 
                 <div className="flex gap-1 sm:gap-2 items-center">

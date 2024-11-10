@@ -29,6 +29,7 @@ export default function ProjectCard({ title, description, tech, link }: ProjectC
       
       <a
         href={link}
+        target="_blank"
         className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors"
       >
         <span>Visit Website</span>
