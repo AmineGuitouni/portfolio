@@ -42,12 +42,10 @@ export default function RootLayout({
         <meta property="og:title" content={webSiteMetaData.title} />
         <meta property="og:description" content={webSiteMetaData.description} />
         <meta property="og:image" content="/public/meta_image.png" />
+        <meta property="og:image:width" content="800" />
+        <meta property="og:image:height" content="447" />
         <meta property="og:url" content={webSiteMetaData.url} />
         <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={webSiteMetaData.title} />
-        <meta name="twitter:description" content={webSiteMetaData.description} />
-        <meta name="twitter:image" content="/public/meta_image.png" />
       </Head>
       </>
       <body
