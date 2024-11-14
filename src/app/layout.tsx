@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/navbar/navbar";
 import Footer from "@/components/footer";
+import Head from 'next/head';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -20,13 +21,35 @@ export const metadata: Metadata = {
   description: "Mohamed Amine Guitouni Portfolio",
 };
 
+const webSiteMetaData = {
+  title: "Mohamed Amine Guitouni Portfolio",
+  description: "Mohamed Amine Guitouni - Full-Stack Developer specializing in Next.js. Building high-performance web applications with a focus on responsive design and seamless user experience.",
+  url: "https://www.guitouni-studio.online",
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
+      <>
+      <Head>
+        <title>Your Website Title</title>
+        <meta name="description" content={webSiteMetaData.description} />
+        <meta property="og:title" content={webSiteMetaData.title} />
+        <meta property="og:description" content={webSiteMetaData.description} />
+        <meta property="og:image" content="/public/meta_image.png" />
+        <meta property="og:url" content={webSiteMetaData.url} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={webSiteMetaData.title} />
+        <meta name="twitter:description" content={webSiteMetaData.description} />
+        <meta name="twitter:image" content="/public/meta_image.png" />
+      </Head>
+      </>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased w-vw bg-c-white-500`}
       >
