@@ -2,12 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  :root {
+    /* Monochrome Palette */
+    --background: 0 0% 100%; /* White */
+    --foreground: 215 28% 17%; /* Dark Gray (#2D3748) */
+    --primary: 0 0% 0%; /* Black */
+    --primary-foreground: 0 0% 100%; /* White */
+    --secondary: 0 0% 96%; /* Light Gray (#F5F5F5) */
+    --secondary-foreground: 215 28% 17%; /* Dark Gray */
+    --muted: 0 0% 96%; /* Light Gray */
+    --muted-foreground: 215 16% 52%; /* Medium Gray (#718096) */
+    --accent: 0 0% 90%; /* Lighter Gray (#E5E5E5) */
+    --accent-foreground: 215 28% 17%; /* Dark Gray */
+    --border: 0 0% 90%; /* Lighter Gray */
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Monochrome Dark Palette */
+    --background: 215 28% 17%; /* Dark Gray */
+    --foreground: 0 0% 98%; /* Near White */
+    --primary: 0 0% 100%; /* White */
+    --primary-foreground: 215 28% 17%; /* Dark Gray */
+    --secondary: 215 20% 25%; /* Darker Gray */
+    --secondary-foreground: 0 0% 98%; /* Near White */
+    --muted: 215 20% 25%; /* Darker Gray */
+    --muted-foreground: 215 15% 65%; /* Lighter Gray */
+    --accent: 215 20% 30%; /* Darker Gray+ */
+    --accent-foreground: 0 0% 98%; /* Near White */
+    --border: 215 20% 30%; /* Darker Gray+ */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
 }
 
 @layer utilities {
-  .shaded-edges{
+  .shaded-edges {
     mask: linear-gradient(90deg,transparent,white 20%,white 80%,transparent);
+  }
+  
+  .text-balance {
+    text-wrap: balance;
   }
 }

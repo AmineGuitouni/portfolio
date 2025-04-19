@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/navbar/navbar";
 import Footer from "@/components/footer";
-import Head from 'next/head';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -17,45 +16,41 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "portfolio",
-  description: "Mohamed Amine Guitouni Portfolio",
+  metadataBase: new URL("https://www.guitouni-studio.online"),
+  title: "Mohamed Amine Guitouni - Full Stack Developer",
+  description: "Portfolio of Mohamed Amine Guitouni, a Full-Stack Developer specializing in Next.js and modern web technologies.",
+  openGraph: {
+    title: "Mohamed Amine Guitouni Portfolio",
+    description: "Full-Stack Developer specializing in Next.js. Building high-performance web applications with a focus on responsive design and seamless user experience.",
+    url: "https://www.guitouni-studio.online",
+    images: [
+      {
+        url: "/meta_image.png",
+        width: 800,
+        height: 447,
+      },
+    ],
+    type: "website",
+  },
 };
-
-const webSiteMetaData = {
-  title: "Mohamed Amine Guitouni Portfolio",
-  description: "Mohamed Amine Guitouni - Full-Stack Developer specializing in Next.js. Building high-performance web applications with a focus on responsive design and seamless user experience.",
-  url: "https://www.guitouni-studio.online",
-}
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
-    <html lang="en">
-      <>
-      <Head>
-        <title>Your Website Title</title>
-        <meta name="description" content={webSiteMetaData.description} />
-        <meta property="og:title" content={webSiteMetaData.title} />
-        <meta property="og:description" content={webSiteMetaData.description} />
-        <meta property="og:image" content="/public/meta_image.png" />
-        <meta property="og:image:width" content="800" />
-        <meta property="og:image:height" content="447" />
-        <meta property="og:url" content={webSiteMetaData.url} />
-        <meta property="og:type" content="website" />
-      </Head>
-      </>
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased w-vw bg-c-white-500`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background text-foreground selection:bg-primary/30`}
       >
-        <main className="w-full overflow-hidden">
+        <div className="relative flex min-h-screen flex-col">
           <Navbar/>
-          {children}
+          <main className="flex-1">
+            {children}
+          </main>
           <Footer/>
-        </main>
+        </div>
       </body>
     </html>
   );

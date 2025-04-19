@@ -4,17 +4,17 @@ import ProjectsSection from "@/components/home/projectsSections";
 
 export default function Home() {
   return (
-    <div className="w-full">
-      <div className="w-full rounded-b-[75px]  sm:rounded-b-[100px] bg-c-white-500 pb-32">
+    <div className="w-full flex flex-col gap-y-8">
+      <div className="w-full rounded-b-[75px] sm:rounded-b-[100px] bg-gradient-to-b from-background to-muted/50 pb-32">
         <IntroductionSection/>
       </div>
 
-      <div className="relative -z-10 h-[225px]">
-        <div className="absolute bg-c-white-100 w-full h-[200%] rounded-b-[75px] sm:rounded-b-[100px] -translate-y-1/2 -z-50"/>
+      <div className="relative h-fit">
+        <div className="absolute bg-gradient-to-b from-muted/50 to-background w-full h-[200%] rounded-b-[75px] sm:rounded-b-[100px] -translate-y-1/2 -z-50"/>
         <TechStackSection/>
       </div>
 
-      <div className="container mx-auto pt-16 mb-16">
+      <div className="container mx-auto">
         <ProjectsSection/>
       </div>
     </div>

@@ -1,4 +1,3 @@
-import { PiHandshake } from "react-icons/pi";
 import Button from "./ui/button";
 import { MdOutlineEmail, MdWhatsapp } from "react-icons/md";
 import { LiaCopyright } from "react-icons/lia";
@@ -6,52 +5,62 @@ import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 
 export default function Footer() {
     return(
-        <footer className="w-full bg-c-white-100 min-h-32 rounded-t-[75px] sm:rounded-t-[100px] pt-16 pb-4 px-4">
-            <div className="container mx-auto h-full flex flex-col items-center gap-8">
-                <div className="size-[100px] bg-gradient-to-b from-c-white-500 rounded-full">
-                    <PiHandshake size={75} className="text-c-gray-100 top-[50%] left-[50%] relative translate-x-[-50%] translate-y-[-50%]"/>
+        <footer className="w-full bg-secondary border-t border-border/40 mt-16 pt-16 pb-8">
+            <div className="container mx-auto h-full flex flex-col items-center gap-12">
+                <div className="text-center max-w-2xl space-y-6">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent pb-2">
+                        Let&apos;s Build Something Amazing
+                    </h2>
+                    <p className="text-muted-foreground text-lg">
+                        Have a project in mind? I&apos;d love to hear about it.
+                    </p>
                 </div>
 
-                <div className="text-center max-w-[400px] sm:max-w-[500px]">
-                    <h1 className="text-4xl sm:text-5xl bg-gradient-to-r from-c-gray-100 to-[hsl(0,0%,40%)] bg-clip-text text-transparent">
-                        Tell me about your next project
-                    </h1>
-                </div>
-
-                <div className="flex items-center gap-4">
-                    <a target="_blank" href="https://mail.google.com/mail/?view=cm&fs=1&to=guitouni.medamine@gmail.com">
-                        <Button className="bg-c-gray-100 text-c-white-100 py-4 px-8 text-sm hover:bg-[hsl(0,0%,25%)]">
-                        <MdOutlineEmail size={20} className="inline-block mr-1"/> Email Me
+                <div className="flex flex-col sm:flex-row items-center gap-4">
+                    <a 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      href="https://mail.google.com/mail/?view=cm&fs=1&to=guitouni.medamine@gmail.com"
+                    >
+                        <Button variant="default" size="lg">
+                            <MdOutlineEmail size={20} className="mr-2"/> Email Me
                         </Button>
                     </a>
 
-                    <a href="https://wa.me/21656522039">
-                        <Button className="py-4 px-8 text-sm bg-c-white-500">
-                            <MdWhatsapp size={20} className="inline-block mr-1"/> WhatsApp
+                    <a 
+                      href="https://wa.me/21656522039" 
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                        <Button variant="outline" size="lg">
+                            <MdWhatsapp size={20} className="mr-2"/> WhatsApp
                         </Button>
                     </a>
                 </div>
 
-                <hr className="border-c-gray-100 mt-12 border-1 w-full"/>
+                <div className="w-full text-sm text-muted-foreground flex flex-col sm:flex-row items-center justify-between gap-4 mt-12 pt-6 border-t border-border/40">
+                    <div className="flex items-center">
+                        <LiaCopyright size={16} className="mr-1"/> 2024 Mohamed Amine Guitouni. All rights reserved.
+                    </div>
 
-                <div className="w-full text-xs flex items-center justify-between">
-                    <span>
-                        <LiaCopyright size={15} className="inline-block mr-1"/> 2024 All rights reserved.
-                    </span>
-
-                    <div className="flex gap-1 sm:gap-2 items-center">
-                        <a href="https://www.linkedin.com/in/mohamed-amine-guitouni-44a400328/" target="_blank" className="text-sm hover:underline">
-                            <span className="hidden sm:inline">
-                                Linkedin
-                            </span>
-                            <FaLinkedinIn className="sm:hidden" />
+                    <div className="flex gap-4 items-center">
+                        <a 
+                          href="https://www.linkedin.com/in/mohamed-amine-guitouni-44a400328/" 
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                            <span className="hidden sm:inline">LinkedIn</span>
+                            <FaLinkedinIn className="sm:hidden size-5" />
                         </a>
-                        <span>/</span>
-                        <a href="https://github.com/AmineGuitouni" target="_blank" className="text-sm hover:underline">
-                            <span className="hidden sm:inline">
-                                Github
-                            </span>
-                            <FaGithub className="sm:hidden" />
+                        <a 
+                          href="https://github.com/AmineGuitouni" 
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                            <span className="hidden sm:inline">GitHub</span>
+                            <FaGithub className="sm:hidden size-5" />
                         </a>
                     </div>
                 </div>

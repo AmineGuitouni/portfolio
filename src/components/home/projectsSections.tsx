@@ -5,32 +5,43 @@ export default function ProjectsSection() {
         {
           title: "MegaTel Platform",
           description: "Employee Productivity Platform to streamline communication and workflow",
-          tech: ["Next.js", "React", "TailwindCSS", "Supabase", "Ai ChatBot", "Google Api"],
-          link: "https://platform.mega-tel.de"
+          tech: ["Next.js", "React", "TailwindCSS", "Supabase", "AI ChatBot", "Google API"],
+          link: "https://mega-tel.de"
         },
         {
           title: "E-Learning Platform",
           description: "University e-learning platform with an AI-powered virtual teacher chatbot.",
-          tech: ["Next.js", "React", "TailwindCSS", "Firebase", "Ai ChatBot"],
+          tech: ["Next.js", "React", "TailwindCSS", "Firebase", "AI ChatBot"],
           link: "https://courima.guitouni-studio.online"
         },
         {
           title: "Wordle Clone",
-          description: "A clone of the popular game Wordle.",
+          description: "A clone of the popular game Wordle with daily challenges and leaderboards.",
           tech: ["Next.js", "TailwindCSS", "React", "Firebase"],
           link: "https://wordle.guitouni-studio.online"
         }
       ];
+
     return (
-        <div className="w-full space-y-8">
+        <div className="w-full space-y-12" id="projects">
             <div className="text-center">
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-c-gray-100 to-[hsl(0,0%,40%)] bg-clip-text text-transparent">
-                  Project I Worked On
-                </h1>
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+                  Featured Projects
+                </h2>
+                <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
+                  Here are some of my recent projects showcasing my skills and experience
+                </p>
             </div>
 
-            <div className="flex flex-col gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {projects.map((project, index) => <ProjectCard key={index} {...project} />)}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {projects.map((project, index) => (
+                  <ProjectCard 
+                    key={index} 
+                    {...project} 
+                    className="opacity-0 animate-fade-in"
+                    style={{ animationDelay: `${index * 0.1}s`, animationFillMode: 'forwards' }}
+                  />
+                ))}
             </div>
         </div>
     )
