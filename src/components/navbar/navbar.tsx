@@ -35,7 +35,7 @@ export default function Navbar() {
                     <a 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      href="https://drive.google.com/file/d/1scW8rRjqzqqn3mJQkziJzWeoMuZaxzXJ/view?usp=sharing"
+                      href="https://drive.google.com/file/d/1lvfpmACQrBXOJn74oiX2xurdF196aI1n/view?usp=sharing"
                       className="transition-all duration-200"
                     >
                         <Button 
