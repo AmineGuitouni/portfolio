@@ -15,7 +15,7 @@ export default function IntroductionSection() {
             <div className="absolute inset-0 size-[150px] bg-gradient-to-r from-primary/30 to-secondary/30 rounded-full blur-md group-hover:blur-lg transition-all duration-500 -z-10"></div>
             <div className="bg-gradient-to-br from-primary/10 to-secondary/20 rounded-full flex justify-center items-center size-[150px] border border-white/10 shadow-lg">
               <Image
-                src="/amine_pic.jpg"
+                src="/amine_pic.png"
                 alt="Mohamed Amine Guitouni"
                 width={140}
                 height={140}
