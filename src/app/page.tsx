@@ -1,3 +1,4 @@
+import FinalProjectSection from "@/components/home/finalProjectSection";
 import IntroductionSection from "@/components/home/introductionSection";
 import TechStackSection from "@/components/home/techStackSection";
 import ProjectsSection from "@/components/home/projectsSections";
@@ -14,6 +15,7 @@ export default function Home() {
         <TechStackSection/>
       </div>
 
+      <FinalProjectSection />
       <div className="container mx-auto">
         <ProjectsSection/>
       </div>
