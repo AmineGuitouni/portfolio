@@ -13,12 +13,11 @@ export default function IntroductionSection() {
           
           <div className="relative group">
             <div className="absolute inset-0 size-[150px] bg-gradient-to-r from-primary/30 to-secondary/30 rounded-full blur-md group-hover:blur-lg transition-all duration-500 -z-10"></div>
-            <div className="bg-gradient-to-br from-primary/10 to-secondary/20 rounded-full flex justify-center items-center size-[150px] border border-white/10 shadow-lg">
+            <div className="bg-gradient-to-br from-primary/10 to-secondary/20 rounded-full flex justify-center items-center size-[150px] border border-white/10 shadow-lg overflow-hidden">
               <Image
                 src="/amine_pic.png"
                 alt="Mohamed Amine Guitouni"
-                width={140}
-                height={140}
+                fill
                 className="rounded-full object-cover group-hover:scale-105 transition-transform duration-300"
                 priority
               />
