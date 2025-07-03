@@ -40,7 +40,7 @@ export default function Footer() {
 
                 <div className="w-full text-sm text-muted-foreground flex flex-col sm:flex-row items-center justify-between gap-4 mt-12 pt-6 border-t border-border/40">
                     <div className="flex items-center">
-                        <LiaCopyright size={16} className="mr-1"/> 2024 Mohamed Amine Guitouni. All rights reserved.
+                        <LiaCopyright size={16} className="mr-1"/> 2025 Mohamed Amine Guitouni. All rights reserved.
                     </div>
 
                     <div className="flex gap-4 items-center">
