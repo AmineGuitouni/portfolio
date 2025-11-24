@@ -12,13 +12,13 @@ export default function ProjectsSection() {
           title: "E-Learning Platform",
           description: "University e-learning platform with an AI-powered virtual teacher chatbot.",
           tech: ["Next.js", "React", "TailwindCSS", "Firebase", "AI ChatBot"],
-          link: "https://courima.guitouni-studio.online"
+          link: "https://courima.guitouni-amine.me"
         },
         {
           title: "Wordle Clone",
           description: "A clone of the popular game Wordle with daily challenges and leaderboards.",
           tech: ["Next.js", "TailwindCSS", "React", "Firebase"],
-          link: "https://wordle.guitouni-studio.online"
+          link: "https://wordle.guitouni-amine.me"
         }
       ];
 
