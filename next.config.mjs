@@ -1,5 +1,6 @@
 const nextConfig = {
-  /* config options here */
+  /* Disable auto-generation of AGENTS.md / CLAUDE.md by next dev */
+  agentRules: false,
 };
 
 export default nextConfig;
