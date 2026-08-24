@@ -19,6 +19,12 @@ export default function ProjectsSection() {
           description: "A clone of the popular game Wordle with daily challenges and leaderboards.",
           tech: ["Next.js", "TailwindCSS", "React", "Firebase"],
           link: "https://wordle.guitouni-amine.me"
+        },
+        {
+          title: "Rust Chess Engine",
+          description: "A playable desktop chess application with a custom Rust engine, optimized legal move generation, alpha-beta search, and multiple game modes.",
+          tech: ["Rust", "Tauri", "Preact", "TypeScript", "Vite"],
+          link: "https://github.com/AmineGuitouni/Rust-Chess-Engine"
         }
       ];
 
