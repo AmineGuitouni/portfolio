@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Navbar from "@/components/navbar/navbar";
-import Footer from "@/components/footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -17,11 +15,11 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.guitouni-studio.online"),
-  title: "Mohamed Amine Guitouni - Full Stack Developer",
-  description: "Portfolio of Mohamed Amine Guitouni, a Full-Stack Developer specializing in Next.js and modern web technologies.",
+  title: "Mohamed Amine Guitouni — Full-Stack & Systems Engineer",
+  description: "Portfolio of Mohamed Amine Guitouni, a full-stack & systems engineer building products end to end with Next.js, Go, Rust, PostgreSQL and AI.",
   openGraph: {
-    title: "Mohamed Amine Guitouni Portfolio",
-    description: "Full-Stack Developer specializing in Next.js. Building high-performance web applications with a focus on responsive design and seamless user experience.",
+    title: "Mohamed Amine Guitouni — Full-Stack & Systems Engineer",
+    description: "Platforms, realtime systems and applied AI — React interfaces, Go and Rust services, PostgreSQL data, shipped to production.",
     url: "https://www.guitouni-studio.online",
     images: [
       {
@@ -42,15 +40,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background text-foreground selection:bg-primary/30`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-[#FAFAF7] text-[#111111]`}
       >
-        <div className="relative flex min-h-screen flex-col">
-          <Navbar/>
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer/>
-        </div>
+        {children}
       </body>
     </html>
   );
