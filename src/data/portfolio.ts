@@ -228,7 +228,7 @@ export const projects: Project[] = [
       { value: "150ms", label: "cache fail-safe" },
     ],
     stack: ["Next.js", "Stripe", "Drizzle", "PostgreSQL", "Redis", "Rust", "Axum", "Cloudflare R2"],
-    links: [{ label: "Live dashboard", href: "https://megashop-dashboard.vercel.app" }],
+    links: [{ label: "Live shop", href: "https://shop.mega-tel.de/" }],
     accent: "#00B37E",
     visibility: "private",
   },
@@ -317,7 +317,7 @@ export const projects: Project[] = [
 export const moreWork = [
   { name: "AI Chat Console", note: "Multi-provider terminal chat with tool calling & MCP", href: "https://github.com/AmineGuitouni/console-ai-chat" },
   { name: "Courima", note: "E-learning platform with an AI virtual teacher", href: "https://courima.guitouni-amine.me" },
-  { name: "Wordle Clone", note: "Daily challenges & leaderboards", href: "https://wordle.guitouni-amine.me" },
+  { name: "Wordle Clone", note: "Daily challenges & leaderboards", href: "https://wordle.guitouni-amine.me/" },
   { name: "Request Logger Proxy", note: "Node proxy that records HTTP traffic", href: "https://github.com/AmineGuitouni/node-request-logger-proxy" },
 ];
 
