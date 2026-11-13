@@ -3,11 +3,9 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { LuArrowUpRight, LuChevronDown, LuFileCheck, LuMail, LuMapPin, LuTrophy } from "react-icons/lu";
+import { EASE, SectionHeading, serif } from "./shared";
 import { TechIcon } from "@/components/tech-icons";
 import { experience, profile, recognition } from "@/data/portfolio";
-
-const EASE = [0.16, 1, 0.3, 1] as const;
-const serif = "font-[family-name:var(--d5-serif)] italic font-normal";
 
 /** Letters stay private; this opens a pre-filled email asking for a copy. */
 const requestHref = (what: string) =>
@@ -41,12 +39,9 @@ export default function Experience() {
   return (
     <section id="experience" className="scroll-mt-24 px-4 py-24 md:px-8">
       <div className="mx-auto max-w-6xl">
-        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-          <h2 className="text-4xl font-semibold leading-[1.02] tracking-[-0.04em] md:text-6xl">
-            Experience, <span className={serif}>on record.</span>
-          </h2>
-          <p className="max-w-sm text-[#55554F]">Every role and award below is backed by a signed letter, available on request.</p>
-        </div>
+        <SectionHeading index="03" label="Experience" aside="Every role and award below is backed by a signed letter, available on request.">
+          Experience, <span className={serif}>on record.</span>
+        </SectionHeading>
 
         {/* Award */}
         <motion.div

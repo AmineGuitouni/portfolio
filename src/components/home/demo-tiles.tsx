@@ -3,183 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, animate, motion, useInView } from "motion/react";
 
-/* ───────────────────────── chess: Morphy's Opera Game, replayed ───────────────────────── */
-
-type Piece = { id: string; p: string; sq: string };
-
-const START = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-// Paul Morphy vs Duke Karl / Count Isouard, Paris 1858
-const MOVES = [
-  "e2e4", "e7e5", "g1f3", "d7d6", "d2d4", "c8g4", "d4e5", "g4f3", "d1f3", "d6e5",
-  "f1c4", "g8f6", "f3b3", "d8e7", "b1c3", "c7c6", "c1g5", "b7b5", "c3b5", "c6b5",
-  "c4b5", "b8d7", "e1c1", "a8d8", "d1d7", "d8d7", "h1d1", "e7e6", "b5d7", "f6d7",
-  "b3b8", "d7b8", "d1d8",
-];
-const SAN = [
-  "e4", "e5", "Nf3", "d6", "d4", "Bg4", "dxe5", "Bxf3", "Qxf3", "dxe5", "Bc4", "Nf6", "Qb3", "Qe7", "Nc3", "c6", "Bg5", "b5",
-  "Nxb5", "cxb5", "Bxb5+", "Nbd7", "O-O-O", "Rd8", "Rxd7", "Rxd7", "Rd1", "Qe6", "Bxd7+", "Nxd7", "Qb8+", "Nxb8", "Rd8#",
-];
-const GLYPH: Record<string, string> = { k: "♚", q: "♛", r: "♜", b: "♝", n: "♞", p: "♟" };
-const VALUE: Record<string, number> = { p: 1, n: 3, b: 3, r: 5, q: 9, k: 0 };
-
-function initialPieces(): Piece[] {
-  const out: Piece[] = [];
-  START.split("/").forEach((row, r) => {
-    let f = 0;
-    for (const ch of row) {
-      if (/\d/.test(ch)) f += +ch;
-      else {
-        const sq = "abcdefgh"[f] + (8 - r);
-        out.push({ id: `${ch}${sq}`, p: ch, sq });
-        f++;
-      }
-    }
-  });
-  return out;
-}
-
-function play(pieces: Piece[], move: string): Piece[] {
-  const from = move.slice(0, 2);
-  const to = move.slice(2, 4);
-  const mover = pieces.find((x) => x.sq === from)!;
-  let next = pieces.filter((x) => x.sq !== to).map((x) => (x === mover ? { ...x, sq: to } : x));
-  if (mover.p.toLowerCase() === "k" && Math.abs(from.charCodeAt(0) - to.charCodeAt(0)) === 2) {
-    const [rf, rt] = to[0] === "c" ? ["a", "d"] : ["h", "f"];
-    next = next.map((x) => (x.sq === rf + from[1] ? { ...x, sq: rt + from[1] } : x));
-  }
-  return next;
-}
-
-export function ChessTile() {
-  const [pieces, setPieces] = useState(initialPieces);
-  const [ply, setPly] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { margin: "-10% 0px" });
-  const nodesRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    if (!inView) return;
-    const id = setTimeout(
-      () => {
-        if (ply >= MOVES.length) {
-          setPieces(initialPieces());
-          setPly(0);
-        } else {
-          setPieces((p) => play(p, MOVES[ply]));
-          setPly((n) => n + 1);
-        }
-      },
-      ply >= MOVES.length ? 3200 : 950,
-    );
-    return () => clearTimeout(id);
-  }, [ply, inView]);
-
-  useEffect(() => {
-    let nodes = 0;
-    let last = performance.now();
-    let frame = 0;
-    const loop = (now: number) => {
-      nodes += 59e6 * ((now - last) / 1000);
-      last = now;
-      if (nodesRef.current) nodesRef.current.textContent = (nodes / 1e6).toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "M";
-      frame = requestAnimationFrame(loop);
-    };
-    frame = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(frame);
-  }, []);
-
-  const material = pieces.reduce((s, x) => s + (x.p === x.p.toUpperCase() ? 1 : -1) * VALUE[x.p.toLowerCase()], 0);
-  const mate = ply === MOVES.length;
-  const evalPct = mate ? 100 : Math.max(8, Math.min(92, 50 + material * 6));
-  const lastMove = ply > 0 ? MOVES[ply - 1] : null;
-
-  return (
-    <div ref={ref} className="flex h-full flex-col gap-3">
-      {/* Board fills the card's width (capped), with the eval bar alongside */}
-      <div className="mx-auto flex w-full max-w-[440px] gap-2">
-        <div className="relative w-2.5 shrink-0 overflow-hidden rounded-full bg-[#1A1A1A] ring-1 ring-black/15">
-          <motion.div className="absolute inset-x-0 bottom-0 bg-white" animate={{ height: `${evalPct}%` }} transition={{ type: "spring", stiffness: 80, damping: 20 }} />
-        </div>
-        <div className="relative aspect-square min-w-0 flex-1 overflow-hidden rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.35)]">
-          <div className="grid size-full grid-cols-8 grid-rows-8">
-            {Array.from({ length: 64 }).map((_, i) => {
-              const f = i % 8;
-              const r = 8 - Math.floor(i / 8);
-              const sq = "abcdefgh"[f] + r;
-              const dark = (f + r) % 2 === 1;
-              const hl = lastMove && (lastMove.startsWith(sq) || lastMove.endsWith(sq));
-              return <div key={sq} className={hl ? "bg-[#F6D365]" : dark ? "bg-[#B58863]" : "bg-[#F0D9B5]"} />;
-            })}
-          </div>
-          <AnimatePresence>
-            {pieces.map((x) => {
-              const f = x.sq.charCodeAt(0) - 97;
-              const r = +x.sq[1];
-              const white = x.p === x.p.toUpperCase();
-              const justMoved = lastMove?.endsWith(x.sq);
-              return (
-                <motion.span
-                  key={x.id}
-                  className="absolute flex size-[12.5%] select-none items-center justify-center text-[clamp(1.4rem,3.4vw,2.4rem)] leading-none"
-                  style={{
-                    color: white ? "#FFFFFF" : "#1A1A1A",
-                    textShadow: white ? "0 0 2px #000, 0 1px 1px #000" : "0 1px 0 rgba(255,255,255,0.3)",
-                    zIndex: justMoved ? 2 : 1,
-                  }}
-                  initial={false}
-                  animate={{ left: `${f * 12.5}%`, top: `${(8 - r) * 12.5}%`, opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.4, transition: { duration: 0.18 } }}
-                  transition={{ type: "spring", stiffness: 260, damping: 26 }}
-                >
-                  {GLYPH[x.p.toLowerCase()]}
-                </motion.span>
-              );
-            })}
-          </AnimatePresence>
-          <AnimatePresence>
-            {mate && (
-              <motion.div className="absolute inset-0 z-10 flex items-center justify-center bg-black/55 text-2xl font-semibold text-white backdrop-blur-[2px]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                Checkmate. 1–0
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Compact strip: engine stats + a one-line move ticker that keeps the newest move in view */}
-      <div className="mx-auto flex w-full max-w-[440px] flex-1 flex-col justify-end gap-2">
-        <div className="grid grid-cols-3 gap-2 text-[11px]">
-          <div className="rounded-lg bg-[#F3F2EE] px-2.5 py-2">
-            <p className="truncate text-[#8A8A85]">nodes</p>
-            <p className="truncate font-mono text-sm font-semibold tabular-nums"><span ref={nodesRef}>0.0M</span></p>
-          </div>
-          <div className="rounded-lg bg-[#F3F2EE] px-2.5 py-2">
-            <p className="text-[#8A8A85]">speed</p>
-            <p className="font-mono text-sm font-semibold">59M/s</p>
-          </div>
-          <div className="rounded-lg bg-[#F3F2EE] px-2.5 py-2">
-            <p className="text-[#8A8A85]">move</p>
-            <p className="font-mono text-sm font-semibold tabular-nums">{Math.ceil(ply / 2)}<span className="text-[#A5A5A0]"> / 17</span></p>
-          </div>
-        </div>
-        <div className="flex h-9 items-center gap-3 rounded-lg border border-[#E7E5DF] px-2.5 font-mono text-[12px]">
-          <span className="shrink-0 text-[10px] uppercase tracking-wider text-[#A5A5A0]">Morphy · 1858</span>
-          <div className="flex min-w-0 flex-1 justify-end overflow-hidden whitespace-nowrap [mask-image:linear-gradient(90deg,transparent,black_18%)]">
-            <div className="flex gap-2">
-              {SAN.slice(0, ply).map((m, i) => (
-                <span key={i} className={i === ply - 1 ? "rounded bg-[#111] px-1 text-white" : "text-[#55554F]"}>
-                  {i % 2 === 0 && <span className="text-[#A5A5A0]">{i / 2 + 1}.</span>}
-                  {m}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ───────────────────────── megashop: realtime pipeline ───────────────────────── */
 
 const CHAT = [
@@ -229,7 +52,7 @@ export function RealtimeTile() {
       </div>
       {/* Fixed-height window: messages stack from the bottom and older ones scroll out of view,
           so new messages never change the tile's height. */}
-      <div className="relative h-44 shrink-0 overflow-hidden rounded-xl bg-[#F3F2EE] [mask-image:linear-gradient(to_bottom,transparent,black_22%)]">
+      <div className="relative min-h-44 flex-1 overflow-hidden rounded-xl bg-[#F3F2EE] [mask-image:linear-gradient(to_bottom,transparent,black_22%)]">
         <div className="absolute inset-x-3 bottom-3 flex flex-col gap-1.5">
           <AnimatePresence initial={false} mode="popLayout">
             {CHAT.slice(0, count).slice(-3).map((m) => (
@@ -330,7 +153,7 @@ export function AssistantTile() {
   const reveal = (shown: boolean) => ({ opacity: shown ? 1 : 0, y: shown ? 0 : 8 });
 
   return (
-    <div className="flex h-full flex-col gap-2 text-[12px]">
+    <div className="flex h-full flex-col justify-end gap-2 text-[12px]">
       <div className="self-end rounded-2xl rounded-br-sm bg-[#111] px-3 py-2 text-white">Which stores dropped revenue this week?</div>
       <motion.div
         initial={false}
@@ -363,6 +186,11 @@ export function AssistantTile() {
           Store 03 had 2 machines offline since Tuesday.
         </motion.p>
       </motion.div>
+      {/* Composer, so the conversation reads as a chat window and sits on the tile's floor. */}
+      <div aria-hidden className="mt-2 flex items-center gap-2 rounded-xl border border-[#E7E5DF] bg-[#FAFAF7] py-1.5 pl-3 pr-1.5 text-[#A5A5A0]">
+        <span className="flex-1">Ask about your stores…</span>
+        <span className="flex size-6 items-center justify-center rounded-lg bg-[#2E6BFF] text-white">↑</span>
+      </div>
     </div>
   );
 }

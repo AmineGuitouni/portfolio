@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useInView, useReducedMotion } from "motion/react";
+import { useInView } from "motion/react";
+import { usePrefersReducedMotion } from "../shared";
 
 export const STAGE_W = 480;
 export const STAGE_H = 300;
@@ -41,7 +42,7 @@ export function Stage({ children, className = "" }: { children: React.ReactNode;
 export function useSceneClock(duration: number, stillFrame = duration * 0.6) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { margin: "-10% 0px" });
-  const reduced = useReducedMotion();
+  const reduced = usePrefersReducedMotion();
   const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {

@@ -1,0 +1,16 @@
+[package]
+name = "chess-engine-wasm"
+version = "0.1.0"
+description = "WebAssembly bindings for the Rust Chess Engine, used by the portfolio's playable board"
+edition = "2024"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+panic = "abort"
+strip = true

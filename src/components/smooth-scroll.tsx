@@ -1,9 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
+import { MotionConfig } from "motion/react";
 import Lenis from "lenis";
 
-/** Inertia scrolling shared by every design. Disabled for users who prefer reduced motion. */
+/**
+ * Inertia scrolling for the page. For visitors who prefer reduced motion it is switched off,
+ * and Motion drops its movement animations (fades stay) through the config below.
+ */
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -21,7 +25,10 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       const target = document.querySelector(anchor.getAttribute("href")!);
       if (!target) return;
       e.preventDefault();
-      lenis.scrollTo(target as HTMLElement, { offset: 0 });
+      // Aim at the page position measured right now, not at the element: Lenis would add the
+      // element's offset to its own idea of the scroll position, which can be a frame stale.
+      const margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
+      lenis.scrollTo(Math.max(0, target.getBoundingClientRect().top + window.scrollY - margin));
     };
     document.addEventListener("click", onClick);
 
@@ -32,5 +39,5 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     };
   }, []);
 
-  return <>{children}</>;
+  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
 }

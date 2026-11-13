@@ -51,6 +51,9 @@ const icons: Record<string, IconType> = {
   "MongoDB": SiMongodb,
 };
 
+/** The icon component for a stack item, for callers that need to size or place it themselves. */
+export const techIcon = (name: string): IconType | undefined => icons[name];
+
 export function TechIcon({ name, className }: { name: string; className?: string }) {
   const Icon = icons[name];
   return Icon ? <Icon className={className} aria-hidden /> : null;

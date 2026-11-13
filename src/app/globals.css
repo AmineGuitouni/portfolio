@@ -6,4 +6,62 @@
   body {
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+
+  :focus-visible {
+    outline: 2px solid #ff6a3d;
+    outline-offset: 3px;
+  }
+
+  /* Lenis drives the scroll position itself, so native smooth scrolling must stay off. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes d5-blob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -40px) scale(1.08); }
+  66% { transform: translate(-25px, 20px) scale(0.95); }
+}
+@keyframes d5-marquee {
+  to { transform: translateX(-50%); }
+}
+@keyframes d5-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Selected work. A plain list of cards by default. */
+.work-deck {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.work-deck > li:not([aria-hidden]) {
+  scroll-margin-top: 96px;
+}
+
+/* When work.tsx finds the window big enough, the cards pile up as you scroll: equal-height
+   rows, each card sticking 14px lower than the one before. work.tsx mirrors these numbers. */
+.work-deck[data-stacked] {
+  display: grid;
+  grid-auto-rows: 1fr;
+}
+.work-deck[data-stacked] > li:not([aria-hidden]) {
+  position: sticky;
+  top: calc(92px + var(--i) * 14px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 }
