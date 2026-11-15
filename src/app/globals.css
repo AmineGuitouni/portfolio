@@ -35,6 +35,16 @@
   50% { transform: translateY(-8px); }
 }
 
+/* Case studies: a dashed line that flows, and packets crossing a pipeline. */
+@keyframes mt-dash {
+  to { stroke-dashoffset: -18; }
+}
+@keyframes mt-flow {
+  0% { left: 0%; opacity: 0; }
+  8%, 92% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
 /* Selected work. A plain list of cards by default. */
 .work-deck {
   display: flex;

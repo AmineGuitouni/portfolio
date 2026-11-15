@@ -11,7 +11,7 @@ const LINKS = [
 ];
 
 /** The section currently crossing the middle of the viewport, if any. */
-function useActiveSection(ids: string[]) {
+export function useActiveSection(ids: string[]) {
   const [active, setActive] = useState<string | null>(null);
   useEffect(() => {
     const observer = new IntersectionObserver(

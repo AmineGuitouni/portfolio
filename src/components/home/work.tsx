@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { motion, motionValue, useTransform, type MotionValue } from "motion/react";
 import { EASE, SectionHeading, serif } from "./shared";
 import ProjectGlyph from "@/components/project-glyph";
@@ -156,6 +157,15 @@ function Card({ project, index, cover, buried }: { project: Project; index: numb
               ))}
             </dl>
             <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+              {project.caseStudy && (
+                <Link
+                  href={`/work/${project.slug}`}
+                  className="group/link inline-flex items-center gap-2 rounded-full bg-[#FF6A3D] py-1.5 pl-4 pr-1.5 text-sm font-medium text-white transition-transform hover:scale-[1.03]"
+                >
+                  Case study
+                  <span className="flex size-6 items-center justify-center rounded-full bg-white/20 transition-transform group-hover/link:translate-x-0.5">→</span>
+                </Link>
+              )}
               {primary ? (
                 <a
                   href={primary.href}

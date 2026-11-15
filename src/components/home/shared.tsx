@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
-import { motion, useMotionValue, useSpring } from "motion/react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { motion, useInView, useMotionValue, useSpring } from "motion/react";
 
 export const EASE = [0.16, 1, 0.3, 1] as const;
 export const serif = "font-[family-name:var(--d5-serif)] italic font-normal";
@@ -22,28 +22,38 @@ export function usePrefersReducedMotion() {
 }
 
 /** Small numbered label that sits above a section heading. */
-export function Eyebrow({ index, children, dark = false }: { index?: string; children: React.ReactNode; dark?: boolean }) {
+export function Eyebrow({
+  index,
+  children,
+  dark = false,
+  accent = "#FF6A3D",
+}: {
+  index?: string;
+  children: React.ReactNode;
+  dark?: boolean;
+  accent?: string;
+}) {
   return (
     <p className={`flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] ${dark ? "text-white/50" : "text-[#8A8A85]"}`}>
-      {index && <span className="text-[#FF6A3D]">{index}</span>}
+      {index && <span style={{ color: accent }}>{index}</span>}
       <span className={`h-px w-8 ${dark ? "bg-white/20" : "bg-black/15"}`} />
       {children}
     </p>
   );
 }
 
-/** Heading text that rises out of a mask the first time it scrolls into view. */
+/**
+ * Heading text that rises out of a mask the first time it scrolls into view. The mask is what
+ * gets watched: the text itself starts fully clipped (on multi-line headings, without even a
+ * sliver showing), so an observer on it would never fire.
+ */
 export function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const mask = useRef<HTMLSpanElement>(null);
+  const inView = useInView(mask, { once: true, margin: "-6% 0px" });
   return (
     // The padding keeps italic overhangs and descenders inside the mask; the margin cancels it out.
-    <span className={`-mx-[0.08em] -mb-[0.16em] block overflow-hidden px-[0.08em] pb-[0.16em] ${className}`}>
-      <motion.span
-        className="block"
-        initial={{ y: "115%" }}
-        whileInView={{ y: 0 }}
-        viewport={{ once: true, margin: "-6% 0px" }}
-        transition={{ duration: 1, ease: EASE, delay }}
-      >
+    <span ref={mask} className={`-mx-[0.08em] -mb-[0.16em] block overflow-hidden px-[0.08em] pb-[0.16em] ${className}`}>
+      <motion.span className="block" initial={{ y: "115%" }} animate={inView ? { y: 0 } : undefined} transition={{ duration: 1, ease: EASE, delay }}>
         {children}
       </motion.span>
     </span>
@@ -54,17 +64,21 @@ export function SectionHeading({
   index,
   label,
   aside,
+  accent,
   children,
 }: {
   index: string;
   label: string;
   aside?: React.ReactNode;
+  accent?: string;
   children: React.ReactNode;
 }) {
   return (
     <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
       <div>
-        <Eyebrow index={index}>{label}</Eyebrow>
+        <Eyebrow index={index} accent={accent}>
+          {label}
+        </Eyebrow>
         <h2 className="mt-5 max-w-2xl text-4xl font-semibold leading-[1.02] tracking-[-0.04em] md:text-6xl">
           <Reveal>{children}</Reveal>
         </h2>

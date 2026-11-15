@@ -154,6 +154,8 @@ export type Project = {
   credits?: string;
   accent: string;
   visibility: "public" | "private";
+  /** Has its own page at /work/[slug] */
+  caseStudy?: boolean;
 };
 
 export const projects: Project[] = [
@@ -161,7 +163,7 @@ export const projects: Project[] = [
     slug: "megatel",
     name: "MegaTel",
     kind: "Workforce platform",
-    year: "2025 — 2026",
+    year: "2024 — now",
     tagline: "One platform, three apps, for a distributed interviewer workforce.",
     summary:
       "An operating system for a call-center network: a Next.js web platform for operations, a Rust/Tauri desktop agent for workers, and a Go media backend that streams live screen and audio for supervision.",
@@ -174,13 +176,14 @@ export const projects: Project[] = [
     ],
     metrics: [
       { value: "3", label: "deployable apps" },
-      { value: "680+", label: "commits on web" },
+      { value: "840+", label: "commits across 3 apps" },
       { value: "WebRTC", label: "→ HLS pipeline" },
     ],
     stack: ["Next.js", "TypeScript", "Supabase", "Go", "Pion WebRTC", "Rust", "Tauri 2", "LangChain"],
     links: [{ label: "mega-tel.de", href: "https://mega-tel.de" }],
     accent: "#FF5B1F",
     visibility: "private",
+    caseStudy: true,
   },
   {
     slug: "launderer",
@@ -199,13 +202,14 @@ export const projects: Project[] = [
     ],
     metrics: [
       { value: "3", label: "tiers: kiosk, edge, cloud" },
-      { value: "185+", label: "commits on the SaaS" },
+      { value: "260+", label: "commits on the SaaS" },
       { value: "TS + Rust", label: "web & worker" },
     ],
     stack: ["Next.js 16", "Flutter", "PostgreSQL", "Drizzle", "Express", "ESP32", "Rust", "Redis"],
     links: [],
     accent: "#2E6BFF",
     visibility: "private",
+    caseStudy: true,
   },
   {
     slug: "megashop",

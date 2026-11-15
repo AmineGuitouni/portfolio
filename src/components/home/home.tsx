@@ -1,4 +1,3 @@
-import { Fraunces } from "next/font/google";
 import Nav from "./nav";
 import Hero from "./hero";
 import Manifesto from "./manifesto";
@@ -8,8 +7,7 @@ import Experience from "./experience";
 import Work from "./work";
 import Contact from "./contact";
 import { marqueeIcons } from "@/components/tech-icons";
-
-const fraunces = Fraunces({ subsets: ["latin"], style: ["normal", "italic"], axes: ["SOFT", "opsz"], variable: "--d5-serif" });
+import { fraunces } from "@/components/fonts";
 
 export default function Home() {
   return (

@@ -167,6 +167,17 @@ function cover(img: HTMLImageElement, w: number, h: number) {
   return { x: (img.naturalWidth - sw) / 2, y: (img.naturalHeight - sh) / 2, w: sw, h: sh };
 }
 
+/**
+ * A plain copy of the photo whose natural size is its real pixel size. Next's <img> carries a srcset,
+ * which makes `naturalWidth` density-corrected while drawImage still crops in real pixels, so crops
+ * computed from it land in the top-left of the photo.
+ */
+function decode(img: HTMLImageElement) {
+  const copy = new window.Image();
+  copy.src = img.currentSrc || img.src;
+  return copy.decode().then(() => copy);
+}
+
 function Portrait({ px, py }: { px: MotionValue<number>; py: MotionValue<number> }) {
   const reduced = usePrefersReducedMotion();
   const time = useClock(profile.timezone);
@@ -178,6 +189,7 @@ function Portrait({ px, py }: { px: MotionValue<number>; py: MotionValue<number>
   const hex = useRef<HTMLSpanElement>(null);
   // A copy of the photo at on-screen size, kept for reading colours under the cursor.
   const sample = useRef<HTMLCanvasElement | null>(null);
+  const source = useRef<HTMLImageElement | null>(null);
   const [stage, setStage] = useState<"wait" | "resolve" | "done">("wait");
   const [inspecting, setInspecting] = useState(false);
 
@@ -188,12 +200,12 @@ function Portrait({ px, py }: { px: MotionValue<number>; py: MotionValue<number>
 
   // On load the photo renders from a handful of huge pixels down to full resolution.
   useEffect(() => {
-    if (reduced) return;
     const img = image.current!;
     const canvas = pixels.current!;
     let frame = 0;
+    let live = true;
 
-    const begin = () => {
+    const begin = (img: HTMLImageElement) => {
       const w = canvas.offsetWidth;
       const h = canvas.offsetHeight;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -226,8 +238,15 @@ function Portrait({ px, py }: { px: MotionValue<number>; py: MotionValue<number>
       };
       frame = requestAnimationFrame(tick);
     };
-    const ready = () => (frame = requestAnimationFrame(begin));
-    const failed = () => setStage("done");
+    const failed = () => {
+      if (live) setStage("done");
+    };
+    const ready = () =>
+      decode(img).then((copy) => {
+        if (!live) return;
+        source.current = copy;
+        if (!reduced) frame = requestAnimationFrame(() => begin(copy));
+      }, failed);
 
     if (img.complete && img.naturalWidth) ready();
     else {
@@ -235,6 +254,7 @@ function Portrait({ px, py }: { px: MotionValue<number>; py: MotionValue<number>
       img.addEventListener("error", failed, { once: true });
     }
     return () => {
+      live = false;
       cancelAnimationFrame(frame);
       img.removeEventListener("load", ready);
       img.removeEventListener("error", failed);
@@ -243,7 +263,7 @@ function Portrait({ px, py }: { px: MotionValue<number>; py: MotionValue<number>
 
   // Hovering the photo opens an eyedropper: an 11×11 magnified patch and the colour at its centre.
   const inspect = (e: React.PointerEvent<HTMLDivElement>) => {
-    const img = image.current;
+    const img = source.current;
     const el = card.current;
     const out = lens.current;
     if (e.pointerType !== "mouse" || (stage !== "done" && !reduced) || !img || !el || !out) return;
@@ -358,17 +378,21 @@ function Portrait({ px, py }: { px: MotionValue<number>; py: MotionValue<number>
           aria-hidden
           className="pointer-events-none absolute left-0 top-0 z-30"
           style={{ x: lx, y: ly }}
-          initial={false}
-          animate={{ opacity: inspecting ? 1 : 0, scale: inspecting ? 1 : 0.6 }}
-          transition={{ duration: 0.18 }}
         >
-          <div className="relative -translate-x-1/2 -translate-y-1/2">
+          {/* Centred on the cursor and scaled about its own centre, so it opens and closes in place. */}
+          <motion.div
+            className="relative"
+            style={{ x: "-50%", y: "-50%" }}
+            initial={false}
+            animate={{ opacity: inspecting ? 1 : 0, scale: inspecting ? 1 : 0.6 }}
+            transition={{ duration: 0.18 }}
+          >
             <canvas ref={lens} className="block rounded-full shadow-[0_0_0_3px_#fff,0_18px_40px_-10px_rgba(0,0,0,0.55)]" style={{ width: LOUPE, height: LOUPE }} />
             <div className="absolute left-1/2 top-full mt-3 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-[#111] px-2.5 py-1 font-mono text-[11px] text-white shadow-lg">
               <span ref={swatch} className="size-2.5 rounded-full ring-1 ring-white/40" />
               <span ref={hex}>#000000</span>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       </motion.div>
     </motion.div>
